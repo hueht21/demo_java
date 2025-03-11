@@ -2,6 +2,9 @@ package com.cudev.appdemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Role")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -22,6 +28,5 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> user = new HashSet<User>();
-
 
 }
