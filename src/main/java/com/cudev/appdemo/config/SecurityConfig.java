@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -47,10 +48,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Bật CORS theo cấu hình mặc định
                 .csrf(customizer -> customizer.disable()).
                 authorizeHttpRequests(request -> request
-                        .requestMatchers("api/login").permitAll()
+                        .requestMatchers("api/login", "api/register-customer", "/uploads/**").permitAll()
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN")
-//                        .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_ARTIST")
-//                        .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTIST")
+                        .requestMatchers("/api/orders/create/**").hasAnyAuthority("ROLE_CUS")
+                        .requestMatchers("/api/orders/update-repair-oder/**").hasAnyAuthority("ROLE_REPAIR")
 //                        .requestMatchers("/api/public/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_ARTIST")
 //                        .requestMatchers("/api/files/**").permitAll()
 //                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_ARTIST")
@@ -93,6 +94,11 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
 
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 

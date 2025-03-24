@@ -1,11 +1,20 @@
 package com.cudev.appdemo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "customer")
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer {
 
     @Id
@@ -16,7 +25,7 @@ public class Customer {
     @Column(name = "NAME_CUSTOMER")
     private String nameCustomer;
 
-    @Column(name = "NUMBER_PHONE")
+    @Column(name = "NUMBER_PHONE",unique = true)
     private String numberPhone;
 
     @Column(name = "ADDRESS")
@@ -26,54 +35,7 @@ public class Customer {
     @JoinColumn(name = "user", referencedColumnName = "ID_USER")
     private User user;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Oder> orders;
+//    @OneToMany(mappedBy = "customer")
+//    private List<Oder> orders;
 
-    public Long getIdCustomer() {
-        return idCustomer;
-    }
-
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
-    public String getNameCustomer() {
-        return nameCustomer;
-    }
-
-    public void setNameCustomer(String nameCustomer) {
-        this.nameCustomer = nameCustomer;
-    }
-
-    public String getNumberPhone() {
-        return numberPhone;
-    }
-
-    public void setNumberPhone(String numberPhone) {
-        this.numberPhone = numberPhone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Oder> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Oder> orders) {
-        this.orders = orders;
-    }
 }
