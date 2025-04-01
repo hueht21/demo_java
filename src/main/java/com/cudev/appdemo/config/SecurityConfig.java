@@ -52,9 +52,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/orders/create/**").hasAnyAuthority("ROLE_CUS")
                         .requestMatchers("/api/orders/update-repair-oder/**").hasAnyAuthority("ROLE_REPAIR")
-//                        .requestMatchers("/api/public/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_ARTIST")
-//                        .requestMatchers("/api/files/**").permitAll()
-//                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_ARTIST")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
