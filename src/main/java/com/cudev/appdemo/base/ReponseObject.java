@@ -1,5 +1,15 @@
 package com.cudev.appdemo.base;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReponseObject {
 
     private Boolean status;
@@ -7,37 +17,4 @@ public class ReponseObject {
     private String message;
 
     private Object data;
-
-    public ReponseObject(Boolean status, String message, Object data) {
-        this.status = status;
-        this.message = message;
-        this.data = data;
-    }
-
-    public ReponseObject() {
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

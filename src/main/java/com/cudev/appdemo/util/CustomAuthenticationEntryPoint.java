@@ -17,6 +17,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         // Gửi lỗi 401 với thông báo tùy chỉnh
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Username or password is wrong");
+        response.getWriter().write("Bạn chưa đăng nhập");
     }
 }
