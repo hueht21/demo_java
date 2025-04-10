@@ -27,13 +27,13 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService service;
 
+
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<ReponseObject> login(@RequestBody @Valid LoginRequest user) {
         try {
-
             LoginResponse res = service.verify(user);
             return new ResponseEntity<ReponseObject>(
                     new ReponseObject(true, "Login Successful", res),

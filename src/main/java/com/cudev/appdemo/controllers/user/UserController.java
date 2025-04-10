@@ -26,12 +26,12 @@ public class UserController {
     @GetMapping("/getUserById/{id}")
     ResponseEntity<ReponseObject> getUserById(@PathVariable Long id) {
 
+        System.out.println("getUserById" + id);
         try {
             User user = userService.getUserById(id);
-
             return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Thành công", user), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Thành công", ""), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Không tìm thaasy", ""), HttpStatus.BAD_REQUEST);
         }
 
 

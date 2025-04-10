@@ -6,14 +6,17 @@ import com.cudev.appdemo.entity.Oder;
 import com.cudev.appdemo.entity.Repairman;
 import com.cudev.appdemo.model.request.OderRequestDTO;
 import com.cudev.appdemo.model.request.RepairManOderRequest;
+import com.cudev.appdemo.model.response.OderDTO;
 import com.cudev.appdemo.repository.CustomerRepository;
 import com.cudev.appdemo.repository.OderRepository;
 import com.cudev.appdemo.repository.RepairManRepository;
+import com.cudev.appdemo.service.redis.OderServiceRedis;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +34,12 @@ public class OderService {
 
     @Autowired
     private RepairManRepository repairManRepository;
+
+    @Autowired
+    private OderServiceRedis oderServiceRedis;
+
+//    @Autowired
+//    private UserRepository userRepository;
 
     @Transactional
     public Oder createOder(OderRequestDTO oderRequestDTO) {
@@ -85,12 +94,34 @@ public class OderService {
             oder.setRepairman(repairman.get());
             oderRepository.save(oder);
 
-
             return new ReponseObject(true, "Đã cập nhập thợ sửa thành công", oder);
 
 
         } catch (Exception e) {
             return new ReponseObject(false, "Đã có lỗi cập nhập thợ", null);
+        }
+    }
+
+
+    @Transactional
+    public ReponseObject getOderResponse(Long userId) {
+
+        try {
+            Optional<Customer> customer = customerRepository.findById(userId);
+
+            if (customer.isEmpty()) {
+                return new ReponseObject(false, "Không tìm thấy khách hàng", null);
+            }
+
+            List<OderDTO> listOder = oderServiceRedis.getOderByUser(userId);
+
+            return new ReponseObject(true, "Lấy dữ liệu thành công", listOder);
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+            return new ReponseObject(false, "Đã có lỗi xảy ra", null);
         }
     }
 

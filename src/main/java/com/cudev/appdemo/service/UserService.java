@@ -39,14 +39,13 @@ public class UserService {
 
 
     public User getUserById(Long id) {
-        System.out.println("getUserById" + id);
         return userRepository.findById(id).get();
     }
 
     @Transactional
     /// để đảm bảo dữ liệu được lưu đồng bộ.
     public ReponseObject createUser(CustomerRegisterRequest userRequestDTO) {
-
+ 
 
         // Kiểm tra userName đã tồn tại hay chưa
         Optional<User> existingUser = userRepository.findByUserName(userRequestDTO.getUserName());

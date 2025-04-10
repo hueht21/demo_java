@@ -6,24 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "oder")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Oder {
+public class Oder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ODER")
     private Long idOrder;
-
-//    @Column(name = "ID_CUS")
-//    private Long idCustomer;
-//
-//    @Column(name = "ID_REPAIRMAM")
-//    private Long idRepair;
 
     @Column(name = "STATUS")
     private String status;

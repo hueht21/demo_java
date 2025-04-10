@@ -50,4 +50,13 @@ public class OderController {
         }
     }
 
+    @GetMapping("/get-oder-by-user")
+    public ResponseEntity<ReponseObject> getOderByUser(@RequestParam("userId") Long userId) {
+
+
+        ReponseObject reponseObject = oderService.getOderResponse(userId);
+
+        return new ResponseEntity<ReponseObject>(reponseObject, HttpStatus.OK);
+    }
+
 }
