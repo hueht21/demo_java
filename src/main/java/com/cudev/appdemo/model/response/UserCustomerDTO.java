@@ -1,5 +1,6 @@
 package com.cudev.appdemo.model.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuDto {
+public class UserCustomerDTO {
 
-    private Long id;
-    private String menuName;
-    private String menuUrl;
+    private String username;
+    private String nameUser;
+
+
 }

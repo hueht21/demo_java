@@ -5,13 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuDto {
+public class UserRoleDTO {
 
-    private Long id;
-    private String menuName;
-    private String menuUrl;
+    String nameUser;
+    Long idUser;
+    Set<String> listRoles;
+    Set<MenuDto> listMenu;
+
+
 }

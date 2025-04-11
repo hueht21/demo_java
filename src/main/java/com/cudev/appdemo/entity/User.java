@@ -36,12 +36,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
     private Set<Role> roles  = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_menu",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id")
-    )
-    private Set<Menu> menus;
 }

@@ -31,6 +31,9 @@ public class AuthenticationService {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private MenuService menuService;
+
 
     public LoginResponse verify(LoginRequest request) {
 
@@ -59,13 +62,8 @@ public class AuthenticationService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
-    public Set<MenuDto> getMenusByUserId(Long userId) {
-        return repo.findById(userId)
-                .map(user -> user.getMenus()
-                        .stream()
-                        .map(menu -> new MenuDto(menu.getMenuName(), menu.getLinkUri()))
-                        .collect(Collectors.toSet()))
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    public List<MenuDto> getMenusByUserId(Long userId) {
+        return menuService.getMenusByUserId(userId);
     }
 
     public UserForLogin toUserForLogin(User user) {

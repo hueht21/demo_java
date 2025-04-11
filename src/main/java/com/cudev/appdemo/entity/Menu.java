@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
-
-
 
 @Entity
 @Table(name = "menu")
@@ -15,6 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Menu {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_menu")
@@ -27,13 +27,12 @@ public class Menu {
     private String linkUri;
 
     @Column(name = "user_id_create")
-    private Integer  idUserCreate;
+    private Integer idUserCreate;
 
     @Column(name = "user_id_update", nullable = false)
-    private Integer  idUserUpdate;
-
+    private Integer idUserUpdate;
 
     @ManyToMany(mappedBy = "menus")
-    private Set<User> users;
-
+    private Set<Role> roles = new HashSet<>();
 }
+

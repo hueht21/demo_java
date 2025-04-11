@@ -24,8 +24,18 @@ public class Role {
     @Column(name = "NAME_ROLE")
     private String nameRole;
 
+    @Column(name = "describe")
+    private String describe;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-    private Set<User> user = new HashSet<User>();
+    private Set<User> user = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "role_menu",
+            joinColumns = @JoinColumn(name = "ID_ROLE"),
+            inverseJoinColumns = @JoinColumn(name = "ID_MENU")
+    )
+    private Set<Menu> menus = new HashSet<>();
 }
