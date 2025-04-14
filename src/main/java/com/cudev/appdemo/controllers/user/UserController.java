@@ -33,8 +33,6 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Không tìm thaasy", ""), HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
 }

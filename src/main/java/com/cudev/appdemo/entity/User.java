@@ -23,10 +23,16 @@ public class User {
     private Long id;
 
     @Column(name = "USER_NAME", unique = true)
-    private  String userName;
+    private String userName;
 
     @Column(name = "PASSWORD")
-    private  String password;
+    private String password;
+
+    @Column(name = "name_user")
+    private String nameUser;
+
+    @Column(name = "status_user")
+    private int statusUser;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -35,5 +41,5 @@ public class User {
             joinColumns = @JoinColumn(name = "ID_USER"),
             inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
-    private Set<Role> roles  = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 }

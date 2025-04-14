@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,5 +38,5 @@ public class Role {
             joinColumns = @JoinColumn(name = "ID_ROLE"),
             inverseJoinColumns = @JoinColumn(name = "ID_MENU")
     )
-    private Set<Menu> menus = new HashSet<>();
+    private List<Menu> menus = new java.util.ArrayList<>();
 }

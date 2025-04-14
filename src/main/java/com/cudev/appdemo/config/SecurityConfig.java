@@ -49,10 +49,10 @@ public class SecurityConfig {
                 .csrf(customizer -> customizer.disable()).
                 authorizeHttpRequests(request -> request
                         .requestMatchers("api/login", "api/register-customer", "/uploads/**", "api/hello").permitAll()
-                        .requestMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ROOT")
                         .requestMatchers("/api/orders/create/**", "/api/orders/get-oder-by-user/**").hasAnyAuthority("ROLE_CUS")
                         .requestMatchers("/api/orders/update-repair-oder/**").hasAnyAuthority("ROLE_REPAIR")
-                        .requestMatchers("api/roles/get-all/**").hasAnyAuthority("ROLE_ROOT")
+                        .requestMatchers("api/roles/**", "/api/menus/**").hasAnyAuthority("ROLE_ROOT")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)

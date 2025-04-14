@@ -8,11 +8,13 @@ import com.cudev.appdemo.model.response.LoginResponse;
 import com.cudev.appdemo.model.response.MenuDto;
 import com.cudev.appdemo.model.response.UserForLogin;
 import com.cudev.appdemo.repository.UserRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,5 +75,22 @@ public class AuthenticationService {
         res.setListMenu(getMenusByUserId(user.getId()));
         return res;
     }
+
+
+//    public LoginResponse verifyOAuth2Token(String oauthToken) {
+////        // Giải mã token và lấy thông tin người dùng từ OAuth2
+////        // Ví dụ sử dụng Google OAuth2
+////        OAuth2User user = oauthService.getUserInfo(oauthToken);
+////
+////        if (user == null) {
+////            throw new ValidationException("Không thể xác thực người dùng với OAuth2");
+////        }
+////
+////        // Kiểm tra người dùng trong hệ thống, tạo login response
+////        LoginResponse res = new LoginResponse();
+////        res.setUsername(user.getUsername());
+////        res.setToken(generateToken(user)); // Tạo JWT token cho người dùng đã xác thực qua OAuth2
+////        return res;
+//    }
 
 }
