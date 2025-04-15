@@ -2,8 +2,10 @@ package com.cudev.appdemo.controllers.role;
 
 import com.cudev.appdemo.base.ReponseObject;
 import com.cudev.appdemo.model.request.RoleMenuUpdateDTO;
+import com.cudev.appdemo.model.request.UpdateUserRoleDto;
 import com.cudev.appdemo.model.response.MenuDto;
 import com.cudev.appdemo.service.RoleService;
+import com.cudev.appdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/get-all")
@@ -53,5 +58,16 @@ public class RoleController {
     public ResponseEntity<ReponseObject> getRoleByUserId(@RequestParam("userId") Long userId) {
         ReponseObject reponseObject = new ReponseObject(true, "Thành công", roleService.getRoleByUserId(userId));
         return new ResponseEntity<ReponseObject>(reponseObject, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateUserRole")
+    ResponseEntity<ReponseObject> updateUserRole(@RequestBody UpdateUserRoleDto updateUserRoleDto) {
+
+        try {
+            userService.updateUserRole(updateUserRoleDto.getUserId(), updateUserRoleDto.getListRole());
+            return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Thành công", ""), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Thất bại", ""), HttpStatus.BAD_REQUEST);
+        }
     }
 }

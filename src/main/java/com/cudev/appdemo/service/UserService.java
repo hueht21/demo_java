@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -100,9 +101,30 @@ public class UserService {
         for (Role role : roles) {
             userRoleDTO.getListRoles().add(role.getNameRole());
         }
-
-
-
         return null;
+    }
+
+    public ReponseObject updateUserRole(Long userId, List<Long> roleIds) {
+        // Kiểm tra user đã tồn tại hay chưa
+        User user = userRepository.findById(userId).orElse(null);
+        ReponseObject reponseObject;
+
+        if (user == null) {
+            reponseObject = new ReponseObject(false, "User không tồn tại! Vui lòng chọn username khác.", null);
+            return reponseObject;
+        }
+
+        // Lấy danh sách Role của User
+        List<Role> roles = roleRepository.findAllById(roleIds);
+
+        Set<Role> roleSet = new HashSet<>(roles);
+        user.setRoles(roleSet);
+
+
+        // Cập nhật User
+        userRepository.save(user);
+
+        reponseObject = new ReponseObject(true, "Cập nhật thành công", user);
+        return reponseObject;
     }
 }
