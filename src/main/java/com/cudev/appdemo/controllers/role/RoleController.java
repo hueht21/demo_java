@@ -70,4 +70,10 @@ public class RoleController {
             return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Thất bại", ""), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/lock-account")
+    ResponseEntity<ReponseObject> lockAccount(@RequestParam("userId") Long userId, @RequestParam("status") int status) {
+        return new ResponseEntity<>(userService.accountLock(userId, status), HttpStatus.OK);
+    }
+
 }

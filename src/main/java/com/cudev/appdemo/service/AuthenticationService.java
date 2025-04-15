@@ -75,22 +75,4 @@ public class AuthenticationService {
         res.setListMenu(getMenusByUserId(user.getId()));
         return res;
     }
-
-
-//    public LoginResponse verifyOAuth2Token(String oauthToken) {
-////        // Giải mã token và lấy thông tin người dùng từ OAuth2
-////        // Ví dụ sử dụng Google OAuth2
-////        OAuth2User user = oauthService.getUserInfo(oauthToken);
-////
-////        if (user == null) {
-////            throw new ValidationException("Không thể xác thực người dùng với OAuth2");
-////        }
-////
-////        // Kiểm tra người dùng trong hệ thống, tạo login response
-////        LoginResponse res = new LoginResponse();
-////        res.setUsername(user.getUsername());
-////        res.setToken(generateToken(user)); // Tạo JWT token cho người dùng đã xác thực qua OAuth2
-////        return res;
-//    }
-
 }

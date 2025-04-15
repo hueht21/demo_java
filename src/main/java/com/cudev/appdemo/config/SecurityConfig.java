@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Bật CORS theo cấu hình mặc định
                 .csrf(customizer -> customizer.disable()).
                 authorizeHttpRequests(request -> request
-                        .requestMatchers("api/login", "api/register-customer", "/uploads/**", "api/hello").permitAll()
+                        .requestMatchers("api/login", "api/register-customer", "/uploads/**", "api/hello", "/api/auth/**").permitAll()
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ROOT")
                         .requestMatchers("/api/orders/create/**", "/api/orders/get-oder-by-user/**").hasAnyAuthority("ROLE_CUS")
                         .requestMatchers("/api/orders/update-repair-oder/**").hasAnyAuthority("ROLE_REPAIR")

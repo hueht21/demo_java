@@ -16,6 +16,7 @@ public class UserForLogin {
 
     private Long id;
     private String userName;
+    private String nameUser;
     private Set<String> listRoles;
     private List<MenuDto> listMenu;
 //    private String phone;

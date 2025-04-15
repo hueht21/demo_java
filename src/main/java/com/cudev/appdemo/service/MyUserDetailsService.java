@@ -39,10 +39,12 @@ public class MyUserDetailsService implements UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getNameRole()))
                 .collect(Collectors.toList());
 
-//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles());
+        // Nếu user không có password (tức đăng nhập bằng Google), gán giá trị mặc định
+        String password = (user.getPassword() != null) ? user.getPassword() : "N/A";
+
         return new org.springframework.security.core.userdetails.User(
                 user.getUserName(),
-                user.getPassword(),
+                password,
                 authorities
         );
     }

@@ -5,6 +5,7 @@ import com.cudev.appdemo.entity.Customer;
 import com.cudev.appdemo.entity.Role;
 import com.cudev.appdemo.entity.User;
 import com.cudev.appdemo.model.request.CustomerRegisterRequest;
+import com.cudev.appdemo.model.response.LoginResponse;
 import com.cudev.appdemo.model.response.UserRoleDTO;
 import com.cudev.appdemo.repository.CustomerRepository;
 import com.cudev.appdemo.repository.RoleRepository;
@@ -126,5 +127,45 @@ public class UserService {
 
         reponseObject = new ReponseObject(true, "Cập nhật thành công", user);
         return reponseObject;
+    }
+
+    public User getUser(String userName, String nameAcc) {
+        // Kiểm tra userName đã tồn tại hay chưa
+        Optional<User> existingUser = userRepository.findByUserName(userName);
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        } else {
+            // Tạo đối tượng User
+            User user = new User();
+            user.setUserName(userName);
+            user.setNameUser(nameAcc);
+            user.setStatusUser(1);
+
+            // Gán danh sách Role
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByNameRole("ROLE_CUS").get());
+            user.setRoles(roles);
+
+            // Lưu User
+            User savedUser = userRepository.save(user);
+            return savedUser;
+
+        }
+
+    }
+
+    public ReponseObject accountLock(Long userId, int status) {
+        // Kiểm tra userName đã tồn tại hay chưa
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isEmpty()) {
+            return new ReponseObject(false, "User không tồn tại", null);
+        }else {
+            if(status < 0 || status > 3) {
+                return new ReponseObject(false, "Trạng thái khoong hợp lệ", null);
+            }
+            existingUser.get().setStatusUser(status);
+            userRepository.save(existingUser.get());
+            return new ReponseObject(true, "Cập nhập thành công", null);
+        }
     }
 }
