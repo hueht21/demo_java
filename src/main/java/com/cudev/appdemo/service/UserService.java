@@ -5,7 +5,6 @@ import com.cudev.appdemo.entity.Customer;
 import com.cudev.appdemo.entity.Role;
 import com.cudev.appdemo.entity.User;
 import com.cudev.appdemo.model.request.CustomerRegisterRequest;
-import com.cudev.appdemo.model.response.LoginResponse;
 import com.cudev.appdemo.model.response.UserRoleDTO;
 import com.cudev.appdemo.repository.CustomerRepository;
 import com.cudev.appdemo.repository.RoleRepository;
@@ -54,7 +53,6 @@ public class UserService {
         Optional<User> existingUser = userRepository.findByUserName(userRequestDTO.getUserName());
         if (existingUser.isPresent()) {
             ReponseObject reponseObject = new ReponseObject(false, "UserName đã tồn tại! Vui lòng chọn username khác.", null);
-//            throw new RuntimeException("UserName đã tồn tại! Vui lòng chọn username khác.");
             return reponseObject;
         }
 
@@ -163,9 +161,14 @@ public class UserService {
             if(status < 0 || status > 3) {
                 return new ReponseObject(false, "Trạng thái khoong hợp lệ", null);
             }
-            existingUser.get().setStatusUser(status);
-            userRepository.save(existingUser.get());
-            return new ReponseObject(true, "Cập nhập thành công", null);
+            try{
+                existingUser.get().setStatusUser(status);
+                userRepository.save(existingUser.get());
+                return new ReponseObject(true, "Cập nhập thành công", null);
+            }catch (Exception e) {
+                return new ReponseObject(false, "Có lỗi xảy ra", null);
+            }
+
         }
     }
 }

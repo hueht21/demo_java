@@ -34,11 +34,16 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<ReponseObject> login(@RequestBody @Valid LoginRequest user) {
         try {
-            LoginResponse res = service.verify(user);
-            return new ResponseEntity<ReponseObject>(
-                    new ReponseObject(true, "Login Successful", res),
-                    HttpStatus.OK
-            );
+            ReponseObject reponseObject = service.verify(user);
+            if(reponseObject.getStatus()) {
+                return new ResponseEntity<ReponseObject>(
+                        reponseObject,
+                        HttpStatus.OK);
+            }else {
+                return new ResponseEntity<ReponseObject>(
+                        reponseObject,
+                        HttpStatus.OK);
+            }
         } catch (ValidationException ex) {
             return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Thất bại", ""), HttpStatus.BAD_REQUEST);
         }

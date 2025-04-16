@@ -1,6 +1,7 @@
 package com.cudev.appdemo.controllers.role;
 
 import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.request.LockRequest;
 import com.cudev.appdemo.model.request.RoleMenuUpdateDTO;
 import com.cudev.appdemo.model.request.UpdateUserRoleDto;
 import com.cudev.appdemo.model.response.MenuDto;
@@ -72,8 +73,8 @@ public class RoleController {
     }
 
     @PutMapping("/lock-account")
-    ResponseEntity<ReponseObject> lockAccount(@RequestParam("userId") Long userId, @RequestParam("status") int status) {
-        return new ResponseEntity<>(userService.accountLock(userId, status), HttpStatus.OK);
+    ResponseEntity<ReponseObject> lockAccount(@RequestBody  LockRequest lockRequest) {
+        return new ResponseEntity<>(userService.accountLock(lockRequest.getUserId(), lockRequest.getStatus()), HttpStatus.OK);
     }
 
 }

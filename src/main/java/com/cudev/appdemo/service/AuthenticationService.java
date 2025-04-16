@@ -1,5 +1,6 @@
 package com.cudev.appdemo.service;
 
+import com.cudev.appdemo.base.ReponseObject;
 import com.cudev.appdemo.entity.Role;
 import com.cudev.appdemo.entity.User;
 import com.cudev.appdemo.ex.NotFoundException;
@@ -37,7 +38,7 @@ public class AuthenticationService {
     private MenuService menuService;
 
 
-    public LoginResponse verify(LoginRequest request) {
+    public ReponseObject verify(LoginRequest request) {
 
         try {
 
@@ -45,7 +46,13 @@ public class AuthenticationService {
             if (authentication.isAuthenticated()) {
                 User userRepo = repo.findByUserName(request.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
 
-                return new LoginResponse(jwtService.generateToken(request.getUsername()), toUserForLogin(userRepo));
+                if(userRepo.getStatusUser() == 1) {
+                    LoginResponse loginResponse = new LoginResponse(jwtService.generateToken(request.getUsername()), toUserForLogin(userRepo));
+                    return new ReponseObject(true, "Login thành công", loginResponse);
+                }else {
+                    return new ReponseObject(false, "Tài khoản đã bị khoá", null);
+                }
+
             }
 
         } catch (Exception e) {

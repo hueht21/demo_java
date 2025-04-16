@@ -57,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (MalformedJwtException e) {
             sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Token không hợp lệ");
         } catch (Exception e) {
-            sendErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi server khi xử lý token");
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Lỗi server khi xử lý token");
         }
 
 

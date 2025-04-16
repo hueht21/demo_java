@@ -60,16 +60,22 @@ public class OAuthController {
                 User user = userService.getUser(email, name);
 
 
-                // Sinh JWT token
-                String jwt = jwtService.generateToken(user.getUserName());
+                if(user.getStatusUser() == 1) {
+                    // Sinh JWT token
+                    String jwt = jwtService.generateToken(user.getUserName());
 
-                UserForLogin userForLogin = authenticationService.toUserForLogin(user);
+                    UserForLogin userForLogin = authenticationService.toUserForLogin(user);
 
 
-                LoginResponse loginResponse = new LoginResponse(jwt, userForLogin);
+                    LoginResponse loginResponse = new LoginResponse(jwt, userForLogin);
 
-                // Trả về frontend
-                return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Login Successful", loginResponse), HttpStatus.OK);
+                    // Trả về frontend
+                    return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Login Successful", loginResponse), HttpStatus.OK);
+                }else {
+                    // Trả về frontend
+                    return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Tài khoản đã bị khoá", null), HttpStatus.OK);
+                }
+
             } else {
                 return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Invalid ID token", null), HttpStatus.UNAUTHORIZED);
             }
