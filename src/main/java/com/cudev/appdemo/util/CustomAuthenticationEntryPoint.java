@@ -16,7 +16,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         // Gửi lỗi 401 với thông báo tùy chỉnh
+        response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Username or password is wrong");
+
+        // Bạn có thể trả thêm message chi tiết hơn
+        response.getWriter().write("{\"message\": \"Unauthorized - Token is invalid or expired\"}");
     }
 }

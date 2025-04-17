@@ -40,7 +40,7 @@ public class RoleService {
         List<Menu> menus = menuRepository.findAll();
         return menus.stream().map(menu
 
-                -> MenuDto.builder().id(menu.getId()).menuName(menu.getMenuName()).build()
+                -> MenuDto.builder().id(menu.getId()).menuName(menu.getMenuName()).menuUrl(menu.getLinkUri()).build()
 
         ).collect(Collectors.toList());
     }

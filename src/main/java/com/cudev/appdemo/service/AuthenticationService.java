@@ -13,6 +13,7 @@ import jakarta.validation.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -55,8 +56,15 @@ public class AuthenticationService {
 
             }
 
+        } catch (BadCredentialsException e) {
+            // Xử lý khi thông tin đăng nhập sai
+            return new ReponseObject(false, "Sai tên đăng nhập hoặc mật khẩu", null);
+        } catch (NotFoundException e) {
+            // Xử lý khi không tìm thấy người dùng
+            return new ReponseObject(false, e.getMessage(), null);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // Xử lý các lỗi chung khác
+            return new ReponseObject(false, "Đăng nhập thất bại", null);
         }
         return null;
 
