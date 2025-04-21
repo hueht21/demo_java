@@ -33,8 +33,8 @@ public class OderController {
         oderRequestDTO.setImg(img);
 
         try {
-            Oder savedOder = oderService.createOder(oderRequestDTO);
-            return new ResponseEntity<ReponseObject>(new ReponseObject(true, "Thành công", savedOder), HttpStatus.OK);
+            ReponseObject response =  oderService.createOder(oderRequestDTO);
+            return new ResponseEntity<ReponseObject>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<ReponseObject>(new ReponseObject(false, "Thất bại", e), HttpStatus.BAD_REQUEST);
         }

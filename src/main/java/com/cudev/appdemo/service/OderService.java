@@ -42,7 +42,7 @@ public class OderService {
 //    private UserRepository userRepository;
 
     @Transactional
-    public Oder createOder(OderRequestDTO oderRequestDTO) {
+    public ReponseObject  createOder(OderRequestDTO oderRequestDTO) {
 
         try {
             // Kiểm tra Customer có tồn tại không
@@ -66,12 +66,11 @@ public class OderService {
                 oder.setImg(null);
             }
 
-            return oderRepository.save(oder);
+            Oder savedOder =  oderRepository.save(oder);
+            return new ReponseObject(true, "Tạo đơn hàng thành công", savedOder);
         } catch (Exception e) {
-            System.out.println(e);
+            return new ReponseObject(false, "Tạo đơn hàng thất bại: " + e.getMessage(), null);
         }
-        return null;
-
     }
 
     @Transactional

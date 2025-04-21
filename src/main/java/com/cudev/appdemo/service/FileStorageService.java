@@ -45,6 +45,7 @@ public class FileStorageService {
         try {
 
             if (file.isEmpty()) {
+//                return null;
                 throw new RuntimeException("File is empty");
             }
 
