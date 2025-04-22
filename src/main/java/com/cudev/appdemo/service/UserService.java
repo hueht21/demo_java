@@ -31,8 +31,8 @@ public class UserService {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     public Iterable<User> getAllUsers() {
         Iterable<User> listUser = userRepository.findAll();
@@ -59,7 +59,7 @@ public class UserService {
         // Tạo đối tượng User
         User user = new User();
         user.setUserName(userRequestDTO.getUserName());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
 
         // Gán danh sách Role
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(userRequestDTO.getRoleIds()));
