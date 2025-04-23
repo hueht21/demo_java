@@ -31,8 +31,10 @@ import java.util.stream.Collectors;
 public class JwtFilter extends OncePerRequestFilter {
 
 
-    @Autowired
-    private AuthClient authClient; // class dùng để gọi sang auth-service
+//    @Autowired
+//    private AuthClient authClient; // class dùng để gọi sang auth-service
+//
+
 
 
     @Value("${jwt.secret}")
@@ -52,26 +54,21 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-                // Gọi auth-service để xác thực token
+                Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
-                ReponseObject reponseObject = authClient.validateToken(token);
+                Jws<Claims> claimsJws = Jwts.parser()
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(token);
 
-                if (!reponseObject.getStatus()) {
 
-                    sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, reponseObject.getMessage());
-                    return;
-                }
+                // Lấy Claims từ token
+                Claims claims = claimsJws.getBody();
 
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-                UserValidDto userValidDto = mapper.convertValue(reponseObject.getData(), UserValidDto.class); // ✅ đúng cách
-
-//                UserValidDto userValidDto = (UserValidDto) reponseObject.getData();
-                username = userValidDto.getUserName();
-
+                username = claims.getSubject();
+                List<String> roles = claims.get("roles", List.class);
                 // Chuyển đổi danh sách roles thành danh sách GrantedAuthority
-                List<GrantedAuthority> authorities = userValidDto.getRoles().stream()
+                List<GrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
