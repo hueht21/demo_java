@@ -27,10 +27,13 @@ public class AuthClient {
                     entity,
                     ReponseObject.class
             );
+            if(response.getStatusCode() != HttpStatus.OK) {
+                return new ReponseObject(false, "Token không hợp lệ", null);
+            }
             ReponseObject responseBody = response.getBody();
             return responseBody;
         } catch (Exception e) {
-            return new ReponseObject(false, "Đã có lỗi trong quá trình xử lý", null);
+            return new ReponseObject(false, "Token không hợp lệ", null);
         }
     }
 }

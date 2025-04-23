@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/create/**", "/api/orders/get-oder-by-user/**").hasAnyAuthority("ROLE_CUS")
                         .requestMatchers("/api/orders/update-repair-oder/**").hasAnyAuthority("ROLE_REPAIR")
                         .requestMatchers("api/roles/**", "/api/menus/**").hasAnyAuthority("ROLE_ROOT")
+                        .requestMatchers("/api/home-page/**", "/api/menus/**").hasAnyAuthority("ROLE_ROOT", "ROLE_ADMIN", "ROLE_CUS", "ROLE_REPAIR")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)

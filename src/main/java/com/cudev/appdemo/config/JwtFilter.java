@@ -1,11 +1,16 @@
 package com.cudev.appdemo.config;
 
+import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.UserValidDto;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,8 +31,8 @@ import java.util.stream.Collectors;
 public class JwtFilter extends OncePerRequestFilter {
 
 
-//    @Autowired
-//    private AuthClient authClient; // class dùng để gọi sang auth-service
+    @Autowired
+    private AuthClient authClient; // class dùng để gọi sang auth-service
 
 
     @Value("${jwt.secret}")
@@ -49,29 +54,24 @@ public class JwtFilter extends OncePerRequestFilter {
                 token = authHeader.substring(7);
                 // Gọi auth-service để xác thực token
 
-//                ReponseObject reponseObject = authClient.validateToken(token);
-//
-//                if (!reponseObject.getStatus()) {
-//                    sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token không hợp lệ hoặc hết hạn");
-//                    return;
-//                }
+                ReponseObject reponseObject = authClient.validateToken(token);
 
-                Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+                if (!reponseObject.getStatus()) {
 
-                Jws<Claims> claimsJws = Jwts.parser()
-                        .setSigningKey(key)
-                        .build()
-                        .parseClaimsJws(token);
+                    sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, reponseObject.getMessage());
+                    return;
+                }
 
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-                // Lấy Claims từ token
-                Claims claims = claimsJws.getBody();
+                UserValidDto userValidDto = mapper.convertValue(reponseObject.getData(), UserValidDto.class); // ✅ đúng cách
 
-                username = claims.getSubject();
-                List<String> roles = claims.get("roles", List.class);
+//                UserValidDto userValidDto = (UserValidDto) reponseObject.getData();
+                username = userValidDto.getUserName();
 
                 // Chuyển đổi danh sách roles thành danh sách GrantedAuthority
-                List<GrantedAuthority> authorities = roles.stream()
+                List<GrantedAuthority> authorities = userValidDto.getRoles().stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 

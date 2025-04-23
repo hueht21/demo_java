@@ -5,6 +5,8 @@ import com.cudev.appdemo.entity.Customer;
 import com.cudev.appdemo.entity.Role;
 import com.cudev.appdemo.entity.User;
 import com.cudev.appdemo.model.request.CustomerRegisterRequest;
+import com.cudev.appdemo.model.response.MenuDto;
+import com.cudev.appdemo.model.response.UserForLogin;
 import com.cudev.appdemo.model.response.UserRoleDTO;
 import com.cudev.appdemo.repository.CustomerRepository;
 import com.cudev.appdemo.repository.RoleRepository;
@@ -18,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -30,6 +33,9 @@ public class UserService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    private MenuService menuService;
 
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
@@ -157,18 +163,33 @@ public class UserService {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
             return new ReponseObject(false, "User không tồn tại", null);
-        }else {
-            if(status < 0 || status > 3) {
+        } else {
+            if (status < 0 || status > 3) {
                 return new ReponseObject(false, "Trạng thái khoong hợp lệ", null);
             }
-            try{
+            try {
                 existingUser.get().setStatusUser(status);
                 userRepository.save(existingUser.get());
                 return new ReponseObject(true, "Cập nhập thành công", null);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 return new ReponseObject(false, "Có lỗi xảy ra", null);
             }
 
         }
     }
+
+
+    public ReponseObject getMenusByUserName(String userName) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new RuntimeException("User not found with userName: " + userName));
+        List<MenuDto> menus = menuService.getMenusByUserId(user.getId());
+        UserForLogin userForLogin = new UserForLogin();
+        userForLogin.setUserName(user.getUserName());
+        userForLogin.setNameUser(user.getNameUser());
+        userForLogin.setId(user.getId());
+        userForLogin.setListMenu(menus);
+
+        return new ReponseObject(true, "Lấy danh sách menu thành công", userForLogin);
+    }
+
 }
