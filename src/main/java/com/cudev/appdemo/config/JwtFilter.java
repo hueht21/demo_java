@@ -31,12 +31,6 @@ import java.util.stream.Collectors;
 public class JwtFilter extends OncePerRequestFilter {
 
 
-//    @Autowired
-//    private AuthClient authClient; // class dùng để gọi sang auth-service
-//
-
-
-
     @Value("${jwt.secret}")
     private String jwtSecret;
 

@@ -37,7 +37,7 @@ public class MenuService {
         try {
 
             if(menuSaveModel.getLinkUri() == null || menuSaveModel.getLinkUri().isEmpty() || menuSaveModel.getUserCreate() == null){
-                return new ReponseObject(false, "Thất bại", null);
+                return new ReponseObject(false, "Thất bại đầu vào không hợp lý", null);
             }
 
             Menu menu = new Menu();
@@ -47,7 +47,7 @@ public class MenuService {
             menuRepository.save(menu);
             return new ReponseObject(true, "Thành công", menu);
         } catch (Exception e) {
-            return new ReponseObject(false, "Thất bại", null);
+            return new ReponseObject(false, "Thất bại, " + e,  null);
         }
 
     }
