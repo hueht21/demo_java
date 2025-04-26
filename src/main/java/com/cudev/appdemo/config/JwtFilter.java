@@ -1,16 +1,12 @@
 package com.cudev.appdemo.config;
 
-import com.cudev.appdemo.base.ReponseObject;
-import com.cudev.appdemo.model.response.UserValidDto;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cudev.appdemo.constant.AppConst;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,19 +57,24 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 username = claims.getSubject();
                 List<String> roles = claims.get("roles", List.class);
+                List<String> listApps = claims.get("apps", List.class);
                 // Chuyển đổi danh sách roles thành danh sách GrantedAuthority
                 List<GrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
+                if(!listApps.contains(AppConst.app_code)) {
+                    sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "User không có quyền truy cập vào app này");
+//                    return;  // Dừng việc tiếp tục filter chain nếu quyền không hợp lệ
+                }else {
+                    // Set Authentication vào SecurityContext
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            username, null, authorities
+                    );
 
-                // Set Authentication vào SecurityContext
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities
-                );
-
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
 
             }
             filterChain.doFilter(request, response);
