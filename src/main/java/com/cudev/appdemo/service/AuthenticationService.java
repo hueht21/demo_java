@@ -1,27 +1,11 @@
 package com.cudev.appdemo.service;
 
-import com.cudev.appdemo.base.ReponseObject;
-import com.cudev.appdemo.entity.Role;
-import com.cudev.appdemo.entity.User;
-import com.cudev.appdemo.ex.NotFoundException;
-import com.cudev.appdemo.model.request.LoginRequest;
-import com.cudev.appdemo.model.response.LoginResponse;
-import com.cudev.appdemo.model.response.MenuDto;
-import com.cudev.appdemo.model.response.UserForLogin;
-import com.cudev.appdemo.repository.UserRepository;
-import jakarta.validation.ValidationException;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.BadCredentialsException;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 //@Service
 public class AuthenticationService {

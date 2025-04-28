@@ -1,6 +1,6 @@
 package com.cudev.appdemo.service;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.entity.Customer;
 import com.cudev.appdemo.entity.Role;
 import com.cudev.appdemo.entity.User;
@@ -13,14 +13,12 @@ import com.cudev.appdemo.repository.RoleRepository;
 import com.cudev.appdemo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {

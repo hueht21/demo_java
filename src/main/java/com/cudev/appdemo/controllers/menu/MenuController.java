@@ -1,6 +1,6 @@
 package com.cudev.appdemo.controllers.menu;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.model.request.MenuSaveModel;
 import com.cudev.appdemo.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;

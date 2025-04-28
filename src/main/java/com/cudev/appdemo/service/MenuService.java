@@ -1,6 +1,6 @@
 package com.cudev.appdemo.service;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.entity.Menu;
 import com.cudev.appdemo.model.request.MenuSaveModel;
 import com.cudev.appdemo.model.response.MenuDto;
@@ -30,7 +30,7 @@ public class MenuService {
             return getList;
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }1111111111111111
+        }
     }
 
     public ReponseObject saveMenu(MenuSaveModel menuSaveModel) {
