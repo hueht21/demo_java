@@ -1,17 +1,14 @@
 package com.cudev.appdemo.config;
 
-import com.cudev.appdemo.base.ReponseObject;
-import com.cudev.appdemo.model.response.UserValidDto;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cudev.appdemo.constant.AppConst;
+import com.cudev.appdemo.service.KeyManager;
+import com.cudev.appdemo.util.RSAUtil;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,8 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import java.security.PublicKey;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,14 +27,11 @@ import java.util.stream.Collectors;
 public class JwtFilter extends OncePerRequestFilter {
 
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-
+    @Autowired
+    private KeyManager keyManager;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         System.out.println("JwtFilter");
         String authHeader = request.getHeader("Authorization");
@@ -48,32 +41,27 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-                Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+//
+//                String publicKey = RSAUtil.getPublicKey();
 
-                Jws<Claims> claimsJws = Jwts.parser()
-                        .setSigningKey(key)
-                        .build()
-                        .parseClaimsJws(token);
+                Claims claims = getClaimsFromToken(token);
 
-
-                // Lấy Claims từ token
-                Claims claims = claimsJws.getBody();
 
                 username = claims.getSubject();
                 List<String> roles = claims.get("roles", List.class);
-                // Chuyển đổi danh sách roles thành danh sách GrantedAuthority
-                List<GrantedAuthority> authorities = roles.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+                List<String> listApps = claims.get("apps", List.class);
 
+                List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-                // Set Authentication vào SecurityContext
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities
-                );
+                if (!listApps.contains(AppConst.app_code)) {
+                    sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "User không có quyền truy cập vào app này");
+                    return;
+                } else {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
 
             }
             filterChain.doFilter(request, response);
@@ -88,6 +76,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
     }
+
+    public Claims getClaimsFromToken(String token) throws Exception {
+        return Jwts.parser().setSigningKey(keyManager.getPublicKey()).build().parseClaimsJws(token).getBody();
+    }
+
 
     private void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
         response.resetBuffer(); // Đảm bảo status code được đặt đúng

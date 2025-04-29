@@ -1,6 +1,6 @@
 package com.cudev.appdemo.controllers.role;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.model.request.LockRequest;
 import com.cudev.appdemo.model.request.RoleMenuUpdateDTO;
 import com.cudev.appdemo.model.request.UpdateUserRoleDto;

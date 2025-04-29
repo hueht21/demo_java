@@ -1,8 +1,7 @@
 package com.cudev.appdemo.controllers.oder;
 
 
-import com.cudev.appdemo.base.ReponseObject;
-import com.cudev.appdemo.entity.Oder;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.model.request.OderRequestDTO;
 import com.cudev.appdemo.model.request.RepairManOderRequest;
 import com.cudev.appdemo.service.OderService;

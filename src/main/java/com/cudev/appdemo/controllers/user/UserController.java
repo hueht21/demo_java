@@ -1,7 +1,7 @@
 package com.cudev.appdemo.controllers.user;
 
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.entity.User;
 import com.cudev.appdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

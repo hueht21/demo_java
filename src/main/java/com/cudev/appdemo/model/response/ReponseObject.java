@@ -1,4 +1,4 @@
-package com.cudev.appdemo.base;
+package com.cudev.appdemo.model.response;
 
 
 import lombok.AllArgsConstructor;

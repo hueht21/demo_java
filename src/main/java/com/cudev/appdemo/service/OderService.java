@@ -1,6 +1,6 @@
 package com.cudev.appdemo.service;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.entity.Customer;
 import com.cudev.appdemo.entity.Oder;
 import com.cudev.appdemo.entity.Repairman;

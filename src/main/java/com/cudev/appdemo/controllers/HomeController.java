@@ -1,6 +1,6 @@
 package com.cudev.appdemo.controllers;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

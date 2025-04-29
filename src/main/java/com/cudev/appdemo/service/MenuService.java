@@ -1,6 +1,6 @@
 package com.cudev.appdemo.service;
 
-import com.cudev.appdemo.base.ReponseObject;
+import com.cudev.appdemo.model.response.ReponseObject;
 import com.cudev.appdemo.entity.Menu;
 import com.cudev.appdemo.model.request.MenuSaveModel;
 import com.cudev.appdemo.model.response.MenuDto;
